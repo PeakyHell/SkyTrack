@@ -3,13 +3,13 @@
 	"id": "peakyhell-skyblock-mod",
 	"version": "${version}",
 	"name": "PeakyHell Skyblock Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A Hypixel Skyblock mod with utilities and QOL features",
 	"authors": [
-		"Me!"
+		"PeakyHell"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://peakyhell.com/",
+		"sources": "https://github.com/PeakyHell/skyblock-mod"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/peakyhell-skyblock-mod/icon.png",
