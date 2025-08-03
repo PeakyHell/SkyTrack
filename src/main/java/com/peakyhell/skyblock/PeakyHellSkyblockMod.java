@@ -3,6 +3,7 @@ package com.peakyhell.skyblock;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import org.slf4j.Logger;
@@ -24,12 +25,13 @@ public class PeakyHellSkyblockMod implements ClientModInitializer {
 
 		LOGGER.info("Hello Fabric world!");
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
             dispatcher.register(ClientCommandManager.literal("hello").executes(context -> {
-                context.getSource().sendFeedback(Text.literal("Hello, World!"));
+                String username = MinecraftClient.getInstance().getSession().getUsername();
+                context.getSource().sendFeedback(Text.literal("Hello, " + username + "!"));
                 return 1;
-            }));
-        });
+            }))
+        );
 
 	}
 }
