@@ -1,10 +1,7 @@
 package com.peakyhell.skytrack;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import com.peakyhell.skytrack.commands.CommandsConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +20,10 @@ public class SkyTrack implements ClientModInitializer {
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
 
-        LOGGER.info("Hello Fabric world!");
+        LOGGER.info("[SkyTrack] Mod Loaded Successfully");
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
-                dispatcher.register(ClientCommandManager.literal("hello").executes(context -> {
-                    String username = MinecraftClient.getInstance().getSession().getUsername();
-                    context.getSource().sendFeedback(Text.literal("Hello, " + username + "!"));
-                    return 1;
-                }))
-        );
+        // Register commands
+        CommandsConfig.init();
 
     }
 }
