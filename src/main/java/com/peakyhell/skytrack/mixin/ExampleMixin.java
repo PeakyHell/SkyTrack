@@ -1,4 +1,4 @@
-package com.peakyhell.skyblock.mixin;
+package com.peakyhell.skytrack.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

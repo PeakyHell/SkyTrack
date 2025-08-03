@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "peakyhell-skyblock-mod",
+	"id": "skytrack",
 	"version": "${version}",
-	"name": "PeakyHell Skyblock Mod",
+	"name": "SkyTrack",
 	"description": "A Hypixel Skyblock mod with utilities and QOL features",
 	"authors": [
 		"PeakyHell"
@@ -12,15 +12,15 @@
 		"sources": "https://github.com/PeakyHell/skyblock-mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/peakyhell-skyblock-mod/icon.png",
+	"icon": "assets/skytrack/icon.png",
 	"environment": "client",
 	"entrypoints": {
 		"client": [
-			"com.peakyhell.skyblock.PeakyHellSkyblockMod"
+			"com.peakyhell.skytrack.SkyTrack"
 		]
 	},
 	"mixins": [
-		"peakyhell-skyblock-mod.mixins.json"
+		"skytrack.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
