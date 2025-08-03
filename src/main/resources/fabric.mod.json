@@ -13,21 +13,14 @@
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/peakyhell-skyblock-mod/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"com.peakyhell.skyblock.PeakyHellSkyblockMod"
-		],
 		"client": [
-			"com.peakyhell.skyblock.PeakyHellSkyblockModClient"
+			"com.peakyhell.skyblock.PeakyHellSkyblockMod"
 		]
 	},
 	"mixins": [
-		"peakyhell-skyblock-mod.mixins.json",
-		{
-			"config": "peakyhell-skyblock-mod.client.mixins.json",
-			"environment": "client"
-		}
+		"peakyhell-skyblock-mod.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
