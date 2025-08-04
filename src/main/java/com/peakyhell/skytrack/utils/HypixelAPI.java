@@ -16,7 +16,7 @@ public class HypixelAPI {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    public String getRequest(String url) throws Exception {
+    public static String getRequest(String url) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Accept", "application/json")
@@ -25,7 +25,7 @@ public class HypixelAPI {
                 .GET()
                 .build();
 
-        HttpResponse<String>response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
             throw new RuntimeException("HTTP Request Error: " + response.statusCode());
@@ -38,8 +38,7 @@ public class HypixelAPI {
         JsonObject collections;
         try {
             collections = JsonParser.parseString(getRequest(HYPIXEL_API_URL + "resources/skyblock/collections")).getAsJsonObject().get("collections").getAsJsonObject();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
 
