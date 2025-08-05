@@ -4,6 +4,7 @@ public class CommandsConfig {
 
     public static void init() {
         Hello.init();
+        ConfigScreen.init();
     }
 
 }
