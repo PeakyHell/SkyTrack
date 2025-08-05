@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class PlayerInfo {
     public static final String USERNAME = MinecraftClient.getInstance().getSession().getUsername();
     public static final String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
-    public static ArrayList<String> PROFILES = getPlayerProfiles();
+    //public static ArrayList<String> PROFILES = getPlayerProfiles();
     public static String ACTIVE_PROFILE;
 
     /**
