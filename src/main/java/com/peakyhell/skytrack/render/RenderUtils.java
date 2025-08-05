@@ -20,6 +20,12 @@ public class RenderUtils {
         renderFilledBox(context, box, rgba);
     }
 
+    /**
+     * Renders a filled box at given coordinates with the given color
+     * @param context the WorldRenderContext
+     * @param box The box coordinates
+     * @param rgba The color parameters
+     */
     public static void renderFilledBox(WorldRenderContext context, Box box, float[] rgba) {
         MatrixStack matrixStack = context.matrixStack();
         Vec3d camera = context.camera().getPos();
