@@ -9,13 +9,15 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class EfficientMinerOverlay {
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW);
+    static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.RED_SANDSTONE_SLAB);
 
-    class Waypoint {
+    static class Waypoint {
         int x, y, z, prio;
         public Waypoint(int x, int y, int z, int prio) {
             this.x = x;
@@ -25,8 +27,29 @@ public class EfficientMinerOverlay {
         }
     }
 
+    static List<Waypoint> getBLocksAroundPlayer() {
+        List<Waypoint> waypoints = new ArrayList<>();
+        World world = MinecraftClient.getInstance().world;
+
+        int playerX = (int) Math.floor(MinecraftClient.getInstance().player.getX());
+        int playerY = (int) Math.floor(MinecraftClient.getInstance().player.getY());
+        int playerZ = (int) Math.floor(MinecraftClient.getInstance().player.getZ());
+
+        for (int x = playerX - 6; x <= playerX + 6; x++) {
+            for (int y = playerY - 6; y <= playerY + 6; y++) {
+                for (int z = playerZ - 6; z <= playerZ + 6; z++) {
+                    if (!blockStates.contains(world.getBlockState(new BlockPos(x, y, z)).getBlock()) || !isVisible(x, y, z)) {
+                        continue;
+                    }
+                    waypoints.add(new Waypoint(x, y, z, findPrio(x, y, z)));
+                }
+            }
+        }
+
+        return waypoints;
+    }
+
     static int findPrio(int x, int y, int z) {
-        List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.RED_SANDSTONE_SLAB);
         World world = MinecraftClient.getInstance().world;
         if (world == null) {
             return 0;
