@@ -1,7 +1,10 @@
 package com.peakyhell.skytrack;
 
-import net.fabricmc.api.ClientModInitializer;
+import com.peakyhell.skytrack.render.RenderUtils;
 import com.peakyhell.skytrack.commands.CommandsConfig;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,8 @@ public class SkyTrack implements ClientModInitializer {
 
         // Register commands
         CommandsConfig.init();
+
+        WorldRenderEvents.AFTER_ENTITIES.register(RenderUtils::renderFilledBox);
 
     }
 }
