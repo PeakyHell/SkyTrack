@@ -47,7 +47,7 @@ public class RenderUtils {
 
         BuiltBuffer builtBuffer = buffer.end();
 
-        RenderLayer renderLayer = rgba[3] < 1.0f ? RenderLayer.getDebugQuads() : RenderLayer.getSolid();
+        RenderLayer renderLayer = RenderLayer.getDebugQuads();
         renderLayer.draw(builtBuffer);
 
         matrixStack.pop();
