@@ -1,7 +1,10 @@
 package com.peakyhell.skytrack;
 
-import net.fabricmc.api.ClientModInitializer;
 import com.peakyhell.skytrack.commands.CommandsConfig;
+
+import com.peakyhell.skytrack.render.Waypoint;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,14 @@ public class SkyTrack implements ClientModInitializer {
 
         // Register commands
         CommandsConfig.init();
+
+        Waypoint wpOutlined = new Waypoint(100, 100, 100);
+        Waypoint wpFilled = new Waypoint(105, 105, 105);
+
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+            wpOutlined.renderOutlined(context);
+            wpFilled.renderFilled(context);
+        });
 
     }
 }

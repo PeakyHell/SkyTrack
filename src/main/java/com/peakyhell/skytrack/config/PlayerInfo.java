@@ -21,10 +21,15 @@ public class PlayerInfo {
      * @return An ArrayList of the UUIDs.
      */
     static ArrayList<String> getPlayerProfiles() {
-        JsonArray data = HypixelAPI.getPlayerProfiles(UUID).get("profiles").getAsJsonArray();
+        JsonObject data = HypixelAPI.getPlayerProfiles(UUID);
+        if (data == null) {
+            return null;
+        }
+
+        JsonArray array = data.get("profiles").getAsJsonArray();
         ArrayList<String> profiles_uuids = new ArrayList<>();
 
-        for (JsonElement profile : data) {
+        for (JsonElement profile : array) {
             JsonObject profile_data = profile.getAsJsonObject();
             String profile_uuid = profile_data.get("profile_id").getAsString();
 
