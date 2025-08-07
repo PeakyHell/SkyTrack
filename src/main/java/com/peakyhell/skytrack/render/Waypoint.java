@@ -78,8 +78,15 @@ public class Waypoint {
         this.rgba = new float[]{r, g, b, a};
     }
 
+    public void renderOutlined(WorldRenderContext context) {
+        int x = this.coordinates[0];
+        int y = this.coordinates[1];
+        int z = this.coordinates[2];
+        BlockPos block = new BlockPos(x, y, z);
+        RenderUtils.renderOutlinedBox(context, new Box(block), this.rgba);
+    }
 
-    public void render(WorldRenderContext context) {
+    public void renderFilled(WorldRenderContext context) {
         int x = this.coordinates[0];
         int y = this.coordinates[1];
         int z = this.coordinates[2];
