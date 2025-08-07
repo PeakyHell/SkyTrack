@@ -47,12 +47,21 @@ public class HypixelAPI {
      * Makes a GET request to the Hypixel API with the given endpoint.
      * @param endpoint The endpoint the request must be sent to
      * @param error_message The error message that must be logged if an Exception is thrown
-     * @return A JSON object containing the requested data
+     * @return - A JSON object containing the requested data
+     *         - null if the request or the parsing failed.
      */
     public static JsonObject HypixelAPIRequest(String endpoint, String error_message) {
+        String request;
+        try {
+            request = getRequest(HYPIXEL_API_URL + endpoint);
+        } catch (Exception e) {
+            SkyTrack.LOGGER.error("[SkyTrack] Hypixel API Error - {}", error_message, e);
+            return null;
+        }
+
         JsonObject data;
         try {
-            data = JsonParser.parseString(getRequest(HYPIXEL_API_URL + endpoint)).getAsJsonObject();
+            data = JsonParser.parseString(request).getAsJsonObject();
         } catch (Exception e) {
             SkyTrack.LOGGER.error("[SkyTrack] Hypixel API Error - {}", error_message, e);
             return null;
