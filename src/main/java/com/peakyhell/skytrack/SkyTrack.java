@@ -2,7 +2,7 @@ package com.peakyhell.skytrack;
 
 import com.peakyhell.skytrack.commands.CommandsConfig;
 
-import com.peakyhell.skytrack.render.Waypoint;
+import com.peakyhell.skytrack.render.waypoints.Waypoint;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 

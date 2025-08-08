@@ -3,9 +3,12 @@
  */
 package com.peakyhell.skytrack.mining;
 
+import com.peakyhell.skytrack.render.waypoints.Waypoint;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,31 +20,35 @@ public class EfficientMinerOverlay {
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW);
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.RED_SANDSTONE_SLAB);
 
-    static class Waypoint {
-        int x, y, z, prio;
-        public Waypoint(int x, int y, int z, int prio) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.prio = prio;
-        }
-    }
-
-    static List<Waypoint> getBLocksAroundPlayer() {
+    /**
+     * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
+     * @return A List of waypoints with their priority calculated
+     */
+    List<Waypoint> getBLocksAroundPlayer() {
         List<Waypoint> waypoints = new ArrayList<>();
         World world = MinecraftClient.getInstance().world;
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-        int playerX = (int) Math.floor(MinecraftClient.getInstance().player.getX());
-        int playerY = (int) Math.floor(MinecraftClient.getInstance().player.getY());
-        int playerZ = (int) Math.floor(MinecraftClient.getInstance().player.getZ());
+        if (world == null || player == null) {
+            return null;
+        }
 
+        int playerX = (int) Math.floor(player.getX());
+        int playerY = (int) Math.floor(player.getY());
+        int playerZ = (int) Math.floor(player.getZ());
+
+        Waypoint wp;
+        int prio;
         for (int x = playerX - 6; x <= playerX + 6; x++) {
             for (int y = playerY - 6; y <= playerY + 6; y++) {
                 for (int z = playerZ - 6; z <= playerZ + 6; z++) {
                     if (!blockStates.contains(world.getBlockState(new BlockPos(x, y, z)).getBlock()) || !isVisible(x, y, z)) {
                         continue;
                     }
-                    waypoints.add(new Waypoint(x, y, z, findPrio(x, y, z)));
+                    wp = new Waypoint(x, y, z);
+                    prio = findPrio(x, y, z);
+                    setColor(wp, prio);
+                    waypoints.add(wp);
                 }
             }
         }
@@ -49,6 +56,56 @@ public class EfficientMinerOverlay {
         return waypoints;
     }
 
+    /**
+     * Set waypoints color based on their priority
+     * @param waypoint The waypoint
+     */
+    static void setColor(Waypoint waypoint, int prio) {
+        if (waypoint.getX() < 0) {
+            waypoint.setX(waypoint.getX() + 1);
+        }
+
+        if (waypoint.getZ() < 0) {
+            waypoint.setZ(waypoint.getZ() + 1);
+        }
+
+        if (prio >= 10) {
+            prio = 1;
+        }
+
+        if (prio < 3) {
+            waypoint.setR(20f/255f);
+            waypoint.setG(90f/255f);
+            waypoint.setB(38f/255f);
+            waypoint.setA(1.0f);
+        }
+        else if (prio < 5) {
+            waypoint.setR(145f/255f);
+            waypoint.setG(23f/255f);
+            waypoint.setB(23f/255f);
+            waypoint.setA(1.0f);
+        }
+        else if (prio < 7) {
+            waypoint.setR(104f/255f);
+            waypoint.setG(210f/255f);
+            waypoint.setB(249f/255f);
+            waypoint.setA(1.0f);
+        }
+        else {
+            waypoint.setR(49f/255f);
+            waypoint.setG(41f/255f);
+            waypoint.setB(165f/255f);
+            waypoint.setA(1.0f);
+        }
+    }
+
+    /**
+     * Calculate the priority of a block.
+     * @param x The x coordinate of the block
+     * @param y The y coordinate of the block
+     * @param z The z coordinate of the block
+     * @return The priority of the block.
+     */
     static int findPrio(int x, int y, int z) {
         World world = MinecraftClient.getInstance().world;
         if (world == null) {
@@ -70,6 +127,14 @@ public class EfficientMinerOverlay {
         return prio;
     }
 
+    /**
+     * Checks if the block at the given coordinates is visible (next to air or snow layers)
+     * @param x The x coordinate of the block
+     * @param y The y coordinate of the block
+     * @param z The z coordinate of the block
+     * @return - true if the block is visible
+     *         - false if it's not
+     */
     static boolean isVisible(int x, int y, int z) {
         World world = MinecraftClient.getInstance().world;
         if (world == null) {
