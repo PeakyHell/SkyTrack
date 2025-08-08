@@ -5,6 +5,7 @@ package com.peakyhell.skytrack.mining;
 
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
+import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -12,7 +13,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,15 +22,14 @@ public class EfficientMinerOverlay {
 
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
-     * @return A List of waypoints with their priority calculated
+     * @param waypointManager The waypointManager instance to which the blocks must be added
      */
-    List<Waypoint> getBLocksAroundPlayer() {
-        List<Waypoint> waypoints = new ArrayList<>();
+    public static void getBLocksAroundPlayer(WaypointManager waypointManager) {
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (world == null || player == null) {
-            return null;
+            return;
         }
 
         int playerX = (int) Math.floor(player.getX());
@@ -48,12 +47,10 @@ public class EfficientMinerOverlay {
                     wp = new Waypoint(x, y, z);
                     prio = findPrio(x, y, z);
                     setColor(wp, prio);
-                    waypoints.add(wp);
+                    waypointManager.add(wp);
                 }
             }
         }
-
-        return waypoints;
     }
 
     /**
