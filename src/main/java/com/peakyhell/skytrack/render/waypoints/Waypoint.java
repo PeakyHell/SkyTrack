@@ -3,7 +3,6 @@ package com.peakyhell.skytrack.render.waypoints;
 import com.google.gson.JsonObject;
 import com.peakyhell.skytrack.render.RenderUtils;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 public class Waypoint {
@@ -11,6 +10,7 @@ public class Waypoint {
     String name;
     int[] coordinates;
     float[] rgba;
+    double OFFSET = 0.01;
 
     /**
      * Build a waypoint from a JSON object, used to import from a JSON file using Soopy waypoints format.
@@ -114,15 +114,21 @@ public class Waypoint {
         int x = this.coordinates[0];
         int y = this.coordinates[1];
         int z = this.coordinates[2];
-        BlockPos block = new BlockPos(x, y, z);
-        RenderUtils.renderOutlinedBox(context, new Box(block), this.rgba);
+        Box box = new Box(
+                x - OFFSET, y - OFFSET, z - OFFSET,
+                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
+        );
+        RenderUtils.renderOutlinedBox(context, box, this.rgba);
     }
 
     public void renderFilled(WorldRenderContext context) {
         int x = this.coordinates[0];
         int y = this.coordinates[1];
         int z = this.coordinates[2];
-        BlockPos block = new BlockPos(x, y, z);
-        RenderUtils.renderFilledBox(context, new Box(block), this.rgba);
+        Box box = new Box(
+                x - OFFSET, y - OFFSET, z - OFFSET,
+                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
+        );
+        RenderUtils.renderFilledBox(context, box, this.rgba);
     }
 }
