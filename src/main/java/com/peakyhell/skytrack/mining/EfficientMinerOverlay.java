@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EfficientMinerOverlay {
-    static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW);
-    static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.RED_SANDSTONE_SLAB);
+    static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
+    static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
@@ -74,25 +74,25 @@ public class EfficientMinerOverlay {
             waypoint.setR(20f/255f);
             waypoint.setG(90f/255f);
             waypoint.setB(38f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.8f);
         }
         else if (prio < 5) {
             waypoint.setR(145f/255f);
             waypoint.setG(23f/255f);
             waypoint.setB(23f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.8f);
         }
         else if (prio < 7) {
             waypoint.setR(104f/255f);
             waypoint.setG(210f/255f);
             waypoint.setB(249f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.8f);
         }
         else {
             waypoint.setR(49f/255f);
             waypoint.setG(41f/255f);
             waypoint.setB(165f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.8f);
         }
     }
 
