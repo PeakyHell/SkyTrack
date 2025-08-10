@@ -26,10 +26,10 @@ public class ScoreboardUtils {
                 .sorted(Comparator.comparingInt(ScoreboardEntry::value)) // Sort entries by value
                 .toList();
 
-        // Rebuild visible lines
+        // Rebuild visible lines without formatting
         ArrayList<String> visibleLines = new ArrayList<>();
         for (ScoreboardEntry entry : entries) {
-            visibleLines.add(Team.decorateName(scoreboard.getScoreHolderTeam(entry.owner()), entry.name()).getString());
+            visibleLines.add(Team.decorateName(scoreboard.getScoreHolderTeam(entry.owner()), entry.name()).getString().replaceAll("§.", ""));
         }
 
         // Reverse lines order
