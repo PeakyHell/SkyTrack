@@ -2,8 +2,11 @@ package com.peakyhell.skytrack;
 
 import com.peakyhell.skytrack.commands.CommandsConfig;
 
+import com.peakyhell.skytrack.mining.EfficientMinerOverlay;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
+import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
 import org.slf4j.Logger;
@@ -28,12 +31,18 @@ public class SkyTrack implements ClientModInitializer {
         // Register commands
         CommandsConfig.init();
 
-        Waypoint wpOutlined = new Waypoint(100, 100, 100);
-        Waypoint wpFilled = new Waypoint(105, 105, 105);
+        // Get waypoints every tick
+        WaypointManager waypointManager = new WaypointManager();
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            waypointManager.clear();
+            EfficientMinerOverlay.getBLocksAroundPlayer(waypointManager);
+        });
 
+        // Render waypoints
         WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
-            wpOutlined.renderOutlined(context);
-            wpFilled.renderFilled(context);
+            for (Waypoint wp : waypointManager.getWaypoints()) {
+                wp.renderFilled(context);
+            }
         });
 
     }

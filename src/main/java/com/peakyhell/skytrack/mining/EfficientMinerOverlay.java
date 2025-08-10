@@ -3,8 +3,10 @@
  */
 package com.peakyhell.skytrack.mining;
 
+import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
+import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -12,25 +14,29 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class EfficientMinerOverlay {
-    static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW);
-    static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.RED_SANDSTONE_SLAB);
+    static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
+    static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
-     * @return A List of waypoints with their priority calculated
+     * @param waypointManager The waypointManager instance to which the blocks must be added
      */
-    List<Waypoint> getBLocksAroundPlayer() {
-        List<Waypoint> waypoints = new ArrayList<>();
+    public static void getBLocksAroundPlayer(WaypointManager waypointManager) {
+        String playerLocation = PlayerInfo.getLocation();
+        if (playerLocation == null) return;
+
+        // Activate only if in Glacite Tunnels or Mineshaft
+        if (!playerLocation.contains("Glacite Tunnels") && !playerLocation.contains("Glacite Mineshaft")) return;
+
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (world == null || player == null) {
-            return null;
+            return;
         }
 
         int playerX = (int) Math.floor(player.getX());
@@ -48,12 +54,10 @@ public class EfficientMinerOverlay {
                     wp = new Waypoint(x, y, z);
                     prio = findPrio(x, y, z);
                     setColor(wp, prio);
-                    waypoints.add(wp);
+                    waypointManager.add(wp);
                 }
             }
         }
-
-        return waypoints;
     }
 
     /**
@@ -61,14 +65,6 @@ public class EfficientMinerOverlay {
      * @param waypoint The waypoint
      */
     static void setColor(Waypoint waypoint, int prio) {
-        if (waypoint.getX() < 0) {
-            waypoint.setX(waypoint.getX() + 1);
-        }
-
-        if (waypoint.getZ() < 0) {
-            waypoint.setZ(waypoint.getZ() + 1);
-        }
-
         if (prio >= 10) {
             prio = 1;
         }
@@ -77,25 +73,25 @@ public class EfficientMinerOverlay {
             waypoint.setR(20f/255f);
             waypoint.setG(90f/255f);
             waypoint.setB(38f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.6f);
         }
         else if (prio < 5) {
             waypoint.setR(145f/255f);
             waypoint.setG(23f/255f);
             waypoint.setB(23f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.6f);
         }
         else if (prio < 7) {
             waypoint.setR(104f/255f);
             waypoint.setG(210f/255f);
             waypoint.setB(249f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.6f);
         }
         else {
             waypoint.setR(49f/255f);
             waypoint.setG(41f/255f);
             waypoint.setB(165f/255f);
-            waypoint.setA(1.0f);
+            waypoint.setA(0.6f);
         }
     }
 

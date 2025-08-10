@@ -6,15 +6,20 @@ import com.peakyhell.skytrack.utils.HypixelAPI;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import com.peakyhell.skytrack.utils.ScoreboardUtils;
 import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PlayerInfo {
     public static final String USERNAME = MinecraftClient.getInstance().getSession().getUsername();
     public static final String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
     public static ArrayList<String> PROFILES = getPlayerProfiles();
     public static String ACTIVE_PROFILE;
+    public static String Location = getLocation();
+    public static Date lastUpdated = new Date();
 
     /**
      * Requests the profiles list of the player and creates an ArrayList with their UUIDs
@@ -40,5 +45,18 @@ public class PlayerInfo {
         }
 
         return profiles_uuids;
+    }
+
+    public static String getLocation() {
+        List<String> scoreboardLines = ScoreboardUtils.getLines();
+        if (scoreboardLines == null) return null;
+
+        for (String line : scoreboardLines) {
+            if (line.contains("⏣")) {
+                return line;
+            }
+        }
+
+        return null;
     }
 }
