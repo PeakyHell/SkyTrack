@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Scheduler {
-    HashMap<Integer, List<Runnable>> tasks;
-    int currentTick;
+    private final HashMap<Integer, List<Runnable>> tasks;
+    private int currentTick;
 
 
     public Scheduler() {
@@ -15,11 +15,13 @@ public class Scheduler {
     }
 
     /**
-     * Schedule a task that must be run in `delay` ticks.
+     * Schedule a task that must be run in <code>delay</code> ticks.
      * @param task The task to schedule
      * @param delay The delay before running the task
      */
     public void schedule(Runnable task, int delay) {
+        if (task == null) return;
+
         // If no or negative delay, run immediately
         if (delay <= 0) {
             task.run();
@@ -32,6 +34,22 @@ public class Scheduler {
     }
 
     /**
+     * Schedule a task that must run every <code>interval</code> ticks, for <code>end</code> ticks.
+     * @param task The task to schedule
+     * @param delay The delay before running the task for the first time
+     * @param end The duration (in ticks) to keep running the task
+     * @param interval How often the task must be run (in ticks)
+     */
+    public void scheduleInterval(Runnable task, int delay, int end, int interval) {
+        if (task == null || end <= 0 || interval <= 0) return;
+
+        int startTick = this.currentTick + delay;
+        for (int tick = startTick; tick < startTick + end; tick += interval) {
+            this.tasks.computeIfAbsent(tick, k -> new ArrayList<>()).add(task);
+        }
+    }
+
+    /**
      * Executes the tasks that are scheduled for the current tick and removes them from the tasks list.
      */
     public void tick() {
@@ -39,11 +57,14 @@ public class Scheduler {
             List<Runnable> toExecute =  new ArrayList<>(tasks.get(currentTick));
 
             for (Runnable task : toExecute) {
-                task.run();
-
+                if (task != null) task.run();
             }
         }
         tasks.remove(currentTick);
         this.currentTick++;
+    }
+
+    public void clear() {
+        this.tasks.clear();
     }
 }
