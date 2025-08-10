@@ -1,20 +1,30 @@
 package com.peakyhell.skytrack.config;
 
 import com.google.gson.JsonObject;
+import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.utils.HypixelAPI;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.scoreboard.ScoreboardEntry;
+import net.minecraft.scoreboard.ScoreboardObjective;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 public class PlayerInfo {
     public static final String USERNAME = MinecraftClient.getInstance().getSession().getUsername();
     public static final String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
     public static ArrayList<String> PROFILES = getPlayerProfiles();
     public static String ACTIVE_PROFILE;
+    public static String Location = getLocation();
+    public static Date lastUpdated = new Date();
 
     /**
      * Requests the profiles list of the player and creates an ArrayList with their UUIDs
@@ -40,5 +50,23 @@ public class PlayerInfo {
         }
 
         return profiles_uuids;
+    }
+
+    public static String getLocation() {
+        if (lastUpdated.getTime() + 10000 > new Date().getTime()) return null; // If last updated less than 10 seconds ago
+
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        if (player == null) {
+            return null;
+        }
+
+        Scoreboard scoreboard = player.getScoreboard();
+        ScoreboardObjective sidebar = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
+        Collection<ScoreboardEntry> entries = scoreboard.getScoreboardEntries(sidebar);
+        for (ScoreboardEntry entry : entries) {
+            SkyTrack.LOGGER.info(entry.owner());
+        }
+
+        return null;
     }
 }
