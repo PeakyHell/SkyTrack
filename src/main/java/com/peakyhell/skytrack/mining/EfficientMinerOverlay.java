@@ -3,10 +3,10 @@
  */
 package com.peakyhell.skytrack.mining;
 
+import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
-import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -21,11 +21,15 @@ public class EfficientMinerOverlay {
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
+    public static void init() {
+        // TODO Implement enabling when joining island and disabling when leaving
+        SkyTrack.SCHEDULER.scheduleInterval(EfficientMinerOverlay::getBLocksAroundPlayer, 10, 10 * 60 * 20, 1); // Set for 10 minutes
+    }
+
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
-     * @param waypointManager The waypointManager instance to which the blocks must be added
      */
-    public static void getBLocksAroundPlayer(WaypointManager waypointManager) {
+    public static void getBLocksAroundPlayer() {
         String playerLocation = PlayerInfo.getLocation();
         if (playerLocation == null) return;
 
@@ -54,7 +58,7 @@ public class EfficientMinerOverlay {
                     wp = new Waypoint(x, y, z);
                     prio = findPrio(x, y, z);
                     setColor(wp, prio);
-                    waypointManager.add(wp);
+                    SkyTrack.WAYPOINT_MANAGER.add(wp);
                 }
             }
         }

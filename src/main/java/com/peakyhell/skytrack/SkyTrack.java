@@ -29,7 +29,6 @@ public class SkyTrack implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             SCHEDULER.tick();
             WAYPOINT_MANAGER.clear();
-            EfficientMinerOverlay.getBLocksAroundPlayer(WAYPOINT_MANAGER);
         });
 
         // Render waypoints
