@@ -30,7 +30,7 @@ public class EfficientMinerOverlay {
         if (playerLocation == null) return;
 
         // Activate only if in Glacite Tunnels or Mineshaft
-        if (!playerLocation.contains("Glacite Tunnels") || !playerLocation.contains("Glacite Mineshaft")) return;
+        if (!playerLocation.contains("Glacite Tunnels") && !playerLocation.contains("Glacite Mineshaft")) return;
 
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
