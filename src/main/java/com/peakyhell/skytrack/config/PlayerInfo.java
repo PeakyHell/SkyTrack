@@ -13,6 +13,7 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardDisplaySlot;
 import net.minecraft.scoreboard.ScoreboardEntry;
 import net.minecraft.scoreboard.ScoreboardObjective;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,8 +65,14 @@ public class PlayerInfo {
         Scoreboard scoreboard = player.getScoreboard();
         ScoreboardObjective sidebar = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
         Collection<ScoreboardEntry> entries = scoreboard.getScoreboardEntries(sidebar);
+        Text display;
         for (ScoreboardEntry entry : entries) {
             SkyTrack.LOGGER.info(entry.owner());
+            SkyTrack.LOGGER.info(entry.name().getString());
+            display = entry.display();
+            if (display != null) {
+                SkyTrack.LOGGER.info(display.getString());
+            }
         }
 
         return null;
