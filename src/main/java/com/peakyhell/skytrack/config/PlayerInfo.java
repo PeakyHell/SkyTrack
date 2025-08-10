@@ -30,7 +30,7 @@ public class PlayerInfo {
         this.LOCATION = getLocation();
         this.LAST_UPDATED = new Date();
 
-        SkyTrack.SCHEDULER.scheduleInterval(this::getLocation, 10,10 * 60 * 20, 10);
+        SkyTrack.SCHEDULER.scheduleInterval(this::getLocation, 10, 10, 10 * 60 * 20);
     }
 
     /**

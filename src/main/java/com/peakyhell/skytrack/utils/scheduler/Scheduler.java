@@ -37,10 +37,10 @@ public class Scheduler {
      * Schedule a task that must run every <code>interval</code> ticks, for <code>end</code> ticks.
      * @param task The task to schedule
      * @param delay The delay before running the task for the first time
-     * @param end The duration (in ticks) to keep running the task
      * @param interval How often the task must be run (in ticks)
+     * @param end The duration (in ticks) to keep running the task
      */
-    public void scheduleInterval(Runnable task, int delay, int end, int interval) {
+    public void scheduleInterval(Runnable task, int delay, int interval, int end) {
         if (task == null || end <= 0 || interval <= 0) return;
 
         int startTick = this.currentTick + delay;
