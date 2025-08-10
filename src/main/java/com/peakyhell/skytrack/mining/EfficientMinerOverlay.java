@@ -23,7 +23,8 @@ public class EfficientMinerOverlay {
 
     public static void init() {
         // TODO Implement enabling when joining island and disabling when leaving
-        SkyTrack.SCHEDULER.scheduleInterval(EfficientMinerOverlay::getBLocksAroundPlayer, 10, 10 * 60 * 20, 1); // Set for 10 minutes
+        SkyTrack.SCHEDULER.scheduleInterval(SkyTrack.WAYPOINT_MANAGER::clear, 10, 10 * 60 * 20, 5);
+        SkyTrack.SCHEDULER.scheduleInterval(EfficientMinerOverlay::getBLocksAroundPlayer, 10, 10 * 60 * 20, 5); // Set for 10 minutes
     }
 
     /**
