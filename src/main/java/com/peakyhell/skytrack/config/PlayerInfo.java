@@ -1,23 +1,17 @@
 package com.peakyhell.skytrack.config;
 
 import com.google.gson.JsonObject;
-import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.utils.HypixelAPI;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import com.peakyhell.skytrack.utils.ScoreboardUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardDisplaySlot;
-import net.minecraft.scoreboard.ScoreboardEntry;
-import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.text.Text;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class PlayerInfo {
     public static final String USERNAME = MinecraftClient.getInstance().getSession().getUsername();
@@ -54,24 +48,12 @@ public class PlayerInfo {
     }
 
     public static String getLocation() {
-        if (lastUpdated == null) lastUpdated = new Date();
-        else if (lastUpdated.getTime() + 10000 > new Date().getTime()) return null; // If last updated less than 10 seconds ago
+        List<String> scoreboardLines = ScoreboardUtils.getLines();
+        if (scoreboardLines == null) return null;
 
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) {
-            return null;
-        }
-
-        Scoreboard scoreboard = player.getScoreboard();
-        ScoreboardObjective sidebar = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.SIDEBAR);
-        Collection<ScoreboardEntry> entries = scoreboard.getScoreboardEntries(sidebar);
-        Text display;
-        for (ScoreboardEntry entry : entries) {
-            SkyTrack.LOGGER.info(entry.owner());
-            SkyTrack.LOGGER.info(entry.name().getString());
-            display = entry.display();
-            if (display != null) {
-                SkyTrack.LOGGER.info(display.getString());
+        for (String line : scoreboardLines) {
+            if (line.contains("⏣")) {
+                return line;
             }
         }
 

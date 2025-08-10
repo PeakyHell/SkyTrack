@@ -3,6 +3,7 @@
  */
 package com.peakyhell.skytrack.mining;
 
+import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
@@ -25,6 +26,12 @@ public class EfficientMinerOverlay {
      * @param waypointManager The waypointManager instance to which the blocks must be added
      */
     public static void getBLocksAroundPlayer(WaypointManager waypointManager) {
+        String playerLocation = PlayerInfo.getLocation();
+        if (playerLocation == null) return;
+
+        // Activate only if in Glacite Tunnels or Mineshaft
+        if (!playerLocation.contains("Glacite Tunnels") || !playerLocation.contains("Glacite Mineshaft")) return;
+
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
@@ -74,25 +81,25 @@ public class EfficientMinerOverlay {
             waypoint.setR(20f/255f);
             waypoint.setG(90f/255f);
             waypoint.setB(38f/255f);
-            waypoint.setA(0.8f);
+            waypoint.setA(0.6f);
         }
         else if (prio < 5) {
             waypoint.setR(145f/255f);
             waypoint.setG(23f/255f);
             waypoint.setB(23f/255f);
-            waypoint.setA(0.8f);
+            waypoint.setA(0.6f);
         }
         else if (prio < 7) {
             waypoint.setR(104f/255f);
             waypoint.setG(210f/255f);
             waypoint.setB(249f/255f);
-            waypoint.setA(0.8f);
+            waypoint.setA(0.6f);
         }
         else {
             waypoint.setR(49f/255f);
             waypoint.setG(41f/255f);
             waypoint.setB(165f/255f);
-            waypoint.setA(0.8f);
+            waypoint.setA(0.6f);
         }
     }
 

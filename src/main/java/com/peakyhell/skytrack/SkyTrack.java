@@ -2,7 +2,6 @@ package com.peakyhell.skytrack;
 
 import com.peakyhell.skytrack.commands.CommandsConfig;
 
-import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.mining.EfficientMinerOverlay;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
@@ -37,7 +36,6 @@ public class SkyTrack implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             waypointManager.clear();
             EfficientMinerOverlay.getBLocksAroundPlayer(waypointManager);
-            PlayerInfo.getLocation();
         });
 
         // Render waypoints
