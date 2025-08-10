@@ -4,11 +4,21 @@ import com.google.gson.JsonObject;
 import com.peakyhell.skytrack.utils.HypixelAPI;
 
 public class SkyblockData {
-    public static final JsonObject COLLECTIONS = HypixelAPI.getCollections();
-    public static final JsonObject SKILLS = HypixelAPI.getSkills();
-    public static final JsonObject ITEMS = HypixelAPI.getItems();
-    public static final JsonObject ELECTIONS = HypixelAPI.getElection();
-    public static final JsonObject BINGO = HypixelAPI.getBingo();
-    public static final JsonObject NEWS = HypixelAPI.getNews();
-    public static final JsonObject FIRE_SALES = HypixelAPI.getFireSales();
+    public JsonObject COLLECTIONS;
+    public JsonObject SKILLS;
+    public JsonObject ITEMS;
+    public JsonObject ELECTIONS;
+    public JsonObject BINGO;
+    public JsonObject NEWS;
+    public JsonObject FIRE_SALES;
+
+    public SkyblockData() {
+        this.COLLECTIONS = HypixelAPI.getCollections();
+        this.SKILLS = HypixelAPI.getSkills();
+        this.ITEMS = HypixelAPI.getItems();
+        this.ELECTIONS = HypixelAPI.getElection();
+        this.BINGO = HypixelAPI.getBingo();
+        this.NEWS = HypixelAPI.getNews();
+        this.FIRE_SALES = HypixelAPI.getFireSales();
+    }
 }

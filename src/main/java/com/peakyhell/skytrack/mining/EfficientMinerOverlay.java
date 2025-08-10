@@ -4,7 +4,6 @@
 package com.peakyhell.skytrack.mining;
 
 import com.peakyhell.skytrack.SkyTrack;
-import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
 import net.minecraft.block.Block;
@@ -31,7 +30,7 @@ public class EfficientMinerOverlay {
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
      */
     public static void getBLocksAroundPlayer() {
-        String playerLocation = PlayerInfo.getLocation();
+        String playerLocation = SkyTrack.PLAYER_INFO.LOCATION;
         if (playerLocation == null) return;
 
         // Activate only if in Glacite Tunnels or Mineshaft
