@@ -53,7 +53,8 @@ public class PlayerInfo {
     }
 
     public static String getLocation() {
-        if (lastUpdated.getTime() + 10000 > new Date().getTime()) return null; // If last updated less than 10 seconds ago
+        if (lastUpdated == null) lastUpdated = new Date();
+        else if (lastUpdated.getTime() + 10000 > new Date().getTime()) return null; // If last updated less than 10 seconds ago
 
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
