@@ -65,14 +65,6 @@ public class EfficientMinerOverlay {
      * @param waypoint The waypoint
      */
     static void setColor(Waypoint waypoint, int prio) {
-        if (waypoint.getX() < 0) {
-            waypoint.setX(waypoint.getX() + 1);
-        }
-
-        if (waypoint.getZ() < 0) {
-            waypoint.setZ(waypoint.getZ() + 1);
-        }
-
         if (prio >= 10) {
             prio = 1;
         }
