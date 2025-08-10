@@ -4,7 +4,7 @@ import com.peakyhell.skytrack.config.ModConfig;
 import com.peakyhell.skytrack.config.PlayerInfo;
 import com.peakyhell.skytrack.config.SkyblockData;
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
-import com.peakyhell.skytrack.utils.Scheduler;
+import com.peakyhell.skytrack.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
 

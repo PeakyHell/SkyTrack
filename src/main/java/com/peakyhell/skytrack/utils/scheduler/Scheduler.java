@@ -1,4 +1,4 @@
-package com.peakyhell.skytrack.utils;
+package com.peakyhell.skytrack.utils.scheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;

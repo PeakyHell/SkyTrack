@@ -6,7 +6,7 @@ import com.peakyhell.skytrack.commands.Hello;
 import com.peakyhell.skytrack.mining.EfficientMinerOverlay;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
-import com.peakyhell.skytrack.utils.Scheduler;
+import com.peakyhell.skytrack.utils.scheduler.Scheduler;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
