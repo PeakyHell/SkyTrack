@@ -15,15 +15,17 @@ import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class EfficientMinerOverlay {
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     public static void init() {
-        // TODO Implement enabling when joining island and disabling when leaving
-        SkyTrack.SCHEDULER.scheduleInterval(SkyTrack.WAYPOINT_MANAGER::clear, 10, 5, 10 * 60 * 20);
-        SkyTrack.SCHEDULER.scheduleInterval(EfficientMinerOverlay::getBLocksAroundPlayer, 10, 5, 10 * 60 * 20); // Set for 10 minutes
+        // TODO Now disable automatically when leaving but does not re-activate if joining back
+        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft");
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition);
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition);
     }
 
     /**

@@ -3,15 +3,17 @@ package com.peakyhell.skytrack.utils.scheduler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class Scheduler {
-    private final HashMap<Integer, List<Runnable>> tasks;
     private int currentTick;
-
+    private final HashMap<Integer, List<Runnable>> tasks;
+    private final List<RecurringTask> recurringTasks;
 
     public Scheduler() {
-        this.tasks = new HashMap<>();
         this.currentTick = 0;
+        this.tasks = new HashMap<>();
+        this.recurringTasks = new ArrayList<>();
     }
 
     /**
@@ -34,37 +36,65 @@ public class Scheduler {
     }
 
     /**
-     * Schedule a task that must run every <code>interval</code> ticks, for <code>end</code> ticks.
+     * Schedule a task that must run every <code>interval</code> ticks
      * @param task The task to schedule
      * @param delay The delay before running the task for the first time
-     * @param interval How often the task must be run (in ticks)
-     * @param end The duration (in ticks) to keep running the task
+     * @param interval The interval between each run of the task
      */
-    public void scheduleInterval(Runnable task, int delay, int interval, int end) {
-        if (task == null || end <= 0 || interval <= 0) return;
+    public void scheduleRecurring(Runnable task, int delay, int interval) {
+        scheduleRecurringCondition(task, delay, interval, () -> true);
+    }
 
-        int startTick = this.currentTick + delay;
-        for (int tick = startTick; tick < startTick + end; tick += interval) {
-            this.tasks.computeIfAbsent(tick, k -> new ArrayList<>()).add(task);
-        }
+    /**
+     * Schedule a task that must run every <code>interval</code> ticks, while <code>condition</code> is true.
+     * @param task The task to schedule
+     * @param delay The delay before running the task for the first time
+     * @param interval The interval between each run of the task
+     * @param condition The condition that must be true for the task to continue running.
+     */
+    public void scheduleRecurringCondition(Runnable task, int delay, int interval, BooleanSupplier condition) {
+        this.recurringTasks.add(new RecurringTask(task, delay, interval, condition));
     }
 
     /**
      * Executes the tasks that are scheduled for the current tick and removes them from the tasks list.
      */
     public void tick() {
-        if (tasks.containsKey(currentTick)) {
-            List<Runnable> toExecute =  new ArrayList<>(tasks.get(currentTick));
+        // Run unique tasks
+        if (this.tasks.containsKey(this.currentTick)) {
+            List<Runnable> toExecute =  this.tasks.remove(this.currentTick);
 
-            for (Runnable task : toExecute) {
-                if (task != null) task.run();
+            for (Runnable taskToRun : toExecute) {
+                if (taskToRun != null) taskToRun.run();
             }
         }
-        tasks.remove(currentTick);
+
+        // Run recurring tasks
+        if (!this.recurringTasks.isEmpty()) {
+            this.recurringTasks.removeIf(rt -> !rt.condition.getAsBoolean()); // Remove tasks with conditions that became false
+
+            List<RecurringTask> rTasks = new ArrayList<>(recurringTasks);
+
+            for (RecurringTask rt : rTasks) {
+                if (this.currentTick >= rt.startTick && (this.currentTick - rt.startTick) % rt.interval == 0) {
+                    rt.task.run();
+                }
+            }
+        }
+
+
         this.currentTick++;
     }
 
     public void clear() {
         this.tasks.clear();
+    }
+
+    public void clearRecurring() {
+        this.recurringTasks.clear();
+    }
+
+    public int getCurrentTick() {
+        return this.currentTick;
     }
 }
