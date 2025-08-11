@@ -22,7 +22,6 @@ public class EfficientMinerOverlay {
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     public static void init() {
-        // TODO Now disable automatically when leaving but does not re-activate if joining back
         BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION != null && (SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft"));
         SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
         SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
@@ -32,12 +31,6 @@ public class EfficientMinerOverlay {
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
      */
     public static void getBLocksAroundPlayer() {
-        String playerLocation = SkyTrack.PLAYER_INFO.LOCATION;
-        if (playerLocation == null) return;
-
-        // Activate only if in Glacite Tunnels or Mineshaft
-        if (!playerLocation.contains("Glacite Tunnels") && !playerLocation.contains("Glacite Mineshaft")) return;
-
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
