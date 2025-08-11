@@ -23,9 +23,7 @@ public class EfficientMinerOverlay {
 
     public static void init() {
         // TODO Now disable automatically when leaving but does not re-activate if joining back
-        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft");
-        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition);
-        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition);
+        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION != null && (SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft"));
         SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
         SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
     }

@@ -18,10 +18,10 @@ public class ModConfig {
     public static void init() {
 
         SkyTrack.LOGGER = LoggerFactory.getLogger(SkyTrack.MOD_ID);
+        SkyTrack.SCHEDULER = new Scheduler();
         SkyTrack.PLAYER_INFO = new PlayerInfo();
         SkyTrack.SKYBLOCK_DATA = new SkyblockData();
         SkyTrack.WAYPOINT_MANAGER = new WaypointManager();
-        SkyTrack.SCHEDULER = new Scheduler();
 
         // Initialize Commands
         Hello.init();

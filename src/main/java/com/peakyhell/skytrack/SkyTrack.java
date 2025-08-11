@@ -13,10 +13,10 @@ import org.slf4j.Logger;
 public class SkyTrack implements ClientModInitializer {
     public static final String MOD_ID = "skytrack";
     public static Logger LOGGER;
+    public static Scheduler SCHEDULER;
     public static PlayerInfo PLAYER_INFO;
     public static SkyblockData SKYBLOCK_DATA;
     public static WaypointManager WAYPOINT_MANAGER;
-    public static Scheduler SCHEDULER;
 
     @Override
     public void onInitializeClient() {

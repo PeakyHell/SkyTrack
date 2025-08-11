@@ -27,7 +27,7 @@ public class PlayerInfo {
         this.UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
         this.PROFILES = getPlayerProfiles(this.UUID);
         this.ACTIVE_PROFILE = "";
-        this.LOCATION = getLocation();
+        this.LOCATION = "";
         this.LAST_UPDATED = new Date();
 
         SkyTrack.SCHEDULER.scheduleRecurring(this::getLocation, 2, 10);
@@ -59,16 +59,15 @@ public class PlayerInfo {
         return profiles_uuids;
     }
 
-    public String getLocation() {
+    public void getLocation() {
         List<String> scoreboardLines = ScoreboardUtils.getLines();
-        if (scoreboardLines == null) return null;
+        if (scoreboardLines == null) return;
 
         for (String line : scoreboardLines) {
             if (line.contains("⏣")) {
-                return line;
+                this.LOCATION = line;
+                return;
             }
         }
-
-        return null;
     }
 }
