@@ -1,6 +1,7 @@
 package com.peakyhell.skytrack.config;
 
 import com.google.gson.JsonObject;
+import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.utils.HypixelAPI;
 
 import com.google.gson.JsonArray;
@@ -14,18 +15,29 @@ import java.util.Date;
 import java.util.List;
 
 public class PlayerInfo {
-    public static final String USERNAME = MinecraftClient.getInstance().getSession().getUsername();
-    public static final String UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
-    public static ArrayList<String> PROFILES = getPlayerProfiles();
-    public static String ACTIVE_PROFILE;
-    public static String Location = getLocation();
-    public static Date lastUpdated = new Date();
+    public String USERNAME;
+    public String UUID;
+    public ArrayList<String> PROFILES;
+    public String ACTIVE_PROFILE;
+    public String LOCATION;
+    public Date LAST_UPDATED;
+
+    public PlayerInfo() {
+        this.USERNAME = MinecraftClient.getInstance().getSession().getUsername();
+        this.UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
+        this.PROFILES = getPlayerProfiles(this.UUID);
+        this.ACTIVE_PROFILE = "";
+        this.LOCATION = "";
+        this.LAST_UPDATED = new Date();
+
+        SkyTrack.SCHEDULER.scheduleRecurring(this::getLocation, 2, 10);
+    }
 
     /**
      * Requests the profiles list of the player and creates an ArrayList with their UUIDs
      * @return An ArrayList of the UUIDs.
      */
-    static ArrayList<String> getPlayerProfiles() {
+    public ArrayList<String> getPlayerProfiles(String UUID) {
         JsonObject data = HypixelAPI.getPlayerProfiles(UUID);
         if (data == null) {
             return null;
@@ -40,23 +52,22 @@ public class PlayerInfo {
 
             profiles_uuids.add(profile_uuid);
             if (profile_data.get("selected").getAsBoolean()) {
-                ACTIVE_PROFILE = profile_uuid;
+                this.ACTIVE_PROFILE = profile_uuid;
             }
         }
 
         return profiles_uuids;
     }
 
-    public static String getLocation() {
+    public void getLocation() {
         List<String> scoreboardLines = ScoreboardUtils.getLines();
-        if (scoreboardLines == null) return null;
+        if (scoreboardLines == null) return;
 
         for (String line : scoreboardLines) {
             if (line.contains("⏣")) {
-                return line;
+                this.LOCATION = line;
+                return;
             }
         }
-
-        return null;
     }
 }

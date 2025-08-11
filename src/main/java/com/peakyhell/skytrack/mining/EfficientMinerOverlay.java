@@ -3,10 +3,9 @@
  */
 package com.peakyhell.skytrack.mining;
 
-import com.peakyhell.skytrack.config.PlayerInfo;
+import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
-import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
@@ -16,22 +15,22 @@ import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class EfficientMinerOverlay {
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
+    public static void init() {
+        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION != null && (SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft"));
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
+    }
+
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
-     * @param waypointManager The waypointManager instance to which the blocks must be added
      */
-    public static void getBLocksAroundPlayer(WaypointManager waypointManager) {
-        String playerLocation = PlayerInfo.getLocation();
-        if (playerLocation == null) return;
-
-        // Activate only if in Glacite Tunnels or Mineshaft
-        if (!playerLocation.contains("Glacite Tunnels") && !playerLocation.contains("Glacite Mineshaft")) return;
-
+    public static void getBLocksAroundPlayer() {
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
@@ -54,7 +53,7 @@ public class EfficientMinerOverlay {
                     wp = new Waypoint(x, y, z);
                     prio = findPrio(x, y, z);
                     setColor(wp, prio);
-                    waypointManager.add(wp);
+                    SkyTrack.WAYPOINT_MANAGER.add(wp);
                 }
             }
         }
