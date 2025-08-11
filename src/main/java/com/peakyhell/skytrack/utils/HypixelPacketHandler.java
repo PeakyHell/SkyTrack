@@ -7,6 +7,9 @@ import net.hypixel.modapi.packet.impl.clientbound.ClientboundPartyInfoPacket;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPingPacket;
 import net.hypixel.modapi.packet.impl.clientbound.ClientboundPlayerInfoPacket;
 import net.hypixel.modapi.packet.impl.clientbound.event.ClientboundLocationPacket;
+import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket;
+import net.hypixel.modapi.packet.impl.serverbound.ServerboundPingPacket;
+import net.hypixel.modapi.packet.impl.serverbound.ServerboundPlayerInfoPacket;
 
 public class HypixelPacketHandler {
 
@@ -25,38 +28,34 @@ public class HypixelPacketHandler {
     }
 
     private static void handleHello(ClientboundHelloPacket packet) {
-        // TODO
+        SkyTrack.LOGGER.info(packet.toString());
     }
 
     private static void handlePing(ClientboundPingPacket packet) {
-        // TODO
+        SkyTrack.LOGGER.info(packet.toString());
     }
 
     private static void handlePartyInfo(ClientboundPartyInfoPacket packet) {
-        // TODO
+        SkyTrack.LOGGER.info(packet.toString());
     }
 
     private static void handlePlayerInfo(ClientboundPlayerInfoPacket packet) {
-        // TODO
+        SkyTrack.LOGGER.info(packet.toString());
     }
 
     private static void handleLocation(ClientboundLocationPacket packet) {
-        // TODO
+        SkyTrack.LOGGER.info(packet.toString());
     }
 
     public static void sendPing() {
-        // TODO
+        SkyTrack.HYPIXELMODAPI.sendPacket(new ServerboundPingPacket());
     }
 
     public static void sendPartyInfo() {
-        // TODO
+        SkyTrack.HYPIXELMODAPI.sendPacket(new ServerboundPartyInfoPacket());
     }
 
     public static void sendPlayerInfo() {
-        // TODO
-    }
-
-    public static void sendRegister() {
-        // TODO
+        SkyTrack.HYPIXELMODAPI.sendPacket(new ServerboundPlayerInfoPacket());
     }
 }
