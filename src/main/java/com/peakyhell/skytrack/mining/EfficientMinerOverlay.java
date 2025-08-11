@@ -26,6 +26,8 @@ public class EfficientMinerOverlay {
         BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft");
         SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition);
         SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition);
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
     }
 
     /**

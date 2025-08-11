@@ -9,6 +9,7 @@ public class RecurringTask {
     int startTick;
     int interval;
     BooleanSupplier condition;
+    boolean keep;
 
     /**
      * Creates a task that will be run every <code>interval</code> while <code>condition</code> is met.
@@ -17,11 +18,13 @@ public class RecurringTask {
      * @param delay The delay before running the task
      * @param interval The interval (in ticks) between each occurrence
      * @param condition The condition the task must fill to continue running
+     * @param keep If <code>condition</code> become false, if true, the task will not be deleted and will be restarted when condition become true again
      */
-    public RecurringTask(Runnable task, int delay, int interval, BooleanSupplier condition) {
+    public RecurringTask(Runnable task, int delay, int interval, BooleanSupplier condition, boolean keep) {
         this.task = task;
         this.startTick = SkyTrack.SCHEDULER.getCurrentTick() + delay;
         this.interval = interval;
         this.condition = condition;
+        this.keep = keep;
     }
 }

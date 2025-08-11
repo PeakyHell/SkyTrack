@@ -42,7 +42,7 @@ public class Scheduler {
      * @param interval The interval between each run of the task
      */
     public void scheduleRecurring(Runnable task, int delay, int interval) {
-        scheduleRecurringCondition(task, delay, interval, () -> true);
+        scheduleRecurringCondition(task, delay, interval, () -> true, true);
     }
 
     /**
@@ -51,9 +51,10 @@ public class Scheduler {
      * @param delay The delay before running the task for the first time
      * @param interval The interval between each run of the task
      * @param condition The condition that must be true for the task to continue running.
+     * @param keep If <code>condition</code> become false, if true, the task will not be deleted and will be restarted when condition become true again
      */
-    public void scheduleRecurringCondition(Runnable task, int delay, int interval, BooleanSupplier condition) {
-        this.recurringTasks.add(new RecurringTask(task, delay, interval, condition));
+    public void scheduleRecurringCondition(Runnable task, int delay, int interval, BooleanSupplier condition, boolean keep) {
+        this.recurringTasks.add(new RecurringTask(task, delay, interval, condition, keep));
     }
 
     /**
@@ -71,12 +72,12 @@ public class Scheduler {
 
         // Run recurring tasks
         if (!this.recurringTasks.isEmpty()) {
-            this.recurringTasks.removeIf(rt -> !rt.condition.getAsBoolean()); // Remove tasks with conditions that became false
+            this.recurringTasks.removeIf(rt -> !rt.condition.getAsBoolean() && !rt.keep); // Remove tasks with conditions that became false and that must not be kept
 
             List<RecurringTask> rTasks = new ArrayList<>(recurringTasks);
 
             for (RecurringTask rt : rTasks) {
-                if (this.currentTick >= rt.startTick && (this.currentTick - rt.startTick) % rt.interval == 0) {
+                if (rt.condition.getAsBoolean() && this.currentTick >= rt.startTick && (this.currentTick - rt.startTick) % rt.interval == 0) {
                     rt.task.run();
                 }
             }
