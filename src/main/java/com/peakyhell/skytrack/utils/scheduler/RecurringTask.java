@@ -5,11 +5,11 @@ import com.peakyhell.skytrack.SkyTrack;
 import java.util.function.BooleanSupplier;
 
 public class RecurringTask {
-    Runnable task;
-    int startTick;
-    int interval;
-    BooleanSupplier condition;
-    boolean keep;
+    private final Runnable task;
+    private final int startTick;
+    private final int interval;
+    private final BooleanSupplier condition;
+    private final boolean keep;
 
     /**
      * Creates a task that will be run every <code>interval</code> while <code>condition</code> is met.
@@ -27,4 +27,15 @@ public class RecurringTask {
         this.condition = condition;
         this.keep = keep;
     }
+
+    // Getters
+    public Runnable getTask() { return task; }
+
+    public int getStartTick() { return startTick; }
+
+    public int getInterval() { return interval; }
+
+    public BooleanSupplier getCondition() { return condition; }
+
+    public boolean isKeep() { return keep; }
 }
