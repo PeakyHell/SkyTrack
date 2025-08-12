@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WaypointManager {
-    private List<Waypoint> loadedWaypoints;
+    private final List<Waypoint> loadedWaypoints;
 
     public WaypointManager() {
         this.loadedWaypoints = new ArrayList<>();

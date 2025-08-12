@@ -7,10 +7,9 @@ import net.minecraft.util.math.Box;
 
 public class Waypoint {
 
-    String name;
-    int[] coordinates;
-    float[] rgba;
-    double OFFSET = 0.01;
+    private String name;
+    private final int[] coordinates;
+    private final float[] rgba;
 
     /**
      * Build a waypoint from a JSON object, used to import from a JSON file using Soopy waypoints format.
@@ -111,24 +110,23 @@ public class Waypoint {
     public void setA(float a) { this.rgba[3] = a; }
 
     public void renderOutlined(WorldRenderContext context) {
-        int x = this.coordinates[0];
-        int y = this.coordinates[1];
-        int z = this.coordinates[2];
-        Box box = new Box(
-                x - OFFSET, y - OFFSET, z - OFFSET,
-                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
-        );
-        RenderUtils.renderOutlinedBox(context, box, this.rgba);
+        RenderUtils.renderOutlinedBox(context, this.buildBox(), this.rgba);
     }
 
     public void renderFilled(WorldRenderContext context) {
-        int x = this.coordinates[0];
-        int y = this.coordinates[1];
-        int z = this.coordinates[2];
-        Box box = new Box(
+        RenderUtils.renderFilledBox(context, this.buildBox(), this.rgba);
+    }
+
+    public Box buildBox() {
+        int x = this.getX();
+        int y = this.getY();
+        int z = this.getZ();
+
+        double OFFSET = 0.01;
+
+        return new Box(
                 x - OFFSET, y - OFFSET, z - OFFSET,
                 x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
         );
-        RenderUtils.renderFilledBox(context, box, this.rgba);
     }
 }
