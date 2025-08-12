@@ -22,21 +22,24 @@ public class EfficientMinerOverlay {
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     public static void init() {
-        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.getLOCATION() != null && (SkyTrack.PLAYER_INFO.getLOCATION().contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.getLOCATION().contains("Glacite Mineshaft"));
-        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
-        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
+        int delay = 2; // Start running in 2 ticks
+        int interval = 10; // Run every 10 ticks
+        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.getLOCATION() != null && (SkyTrack.PLAYER_INFO.getLOCATION().equals("mining_3") || SkyTrack.PLAYER_INFO.getLOCATION().equals("mineshaft"));
+        boolean keep = true; // Stop running when leaving and restart when joining back
+
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, delay, interval, condition, keep);
+        SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, delay, interval, condition, keep);
     }
 
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority
      */
     public static void getBLocksAroundPlayer() {
+        int fetchRadius = 6; // 13x13x13
+
         World world = MinecraftClient.getInstance().world;
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-        if (world == null || player == null) {
-            return;
-        }
+        if (world == null || player == null) return;
 
         int playerX = (int) Math.floor(player.getX());
         int playerY = (int) Math.floor(player.getY());
@@ -44,9 +47,9 @@ public class EfficientMinerOverlay {
 
         Waypoint wp;
         int prio;
-        for (int x = playerX - 6; x <= playerX + 6; x++) {
-            for (int y = playerY - 6; y <= playerY + 6; y++) {
-                for (int z = playerZ - 6; z <= playerZ + 6; z++) {
+        for (int x = playerX - fetchRadius; x <= playerX + fetchRadius; x++) {
+            for (int y = playerY - fetchRadius; y <= playerY + fetchRadius; y++) {
+                for (int z = playerZ - fetchRadius; z <= playerZ + fetchRadius; z++) {
                     if (!blockStates.contains(world.getBlockState(new BlockPos(x, y, z)).getBlock()) || !isVisible(x, y, z)) {
                         continue;
                     }
@@ -64,33 +67,28 @@ public class EfficientMinerOverlay {
      * @param waypoint The waypoint
      */
     static void setColor(Waypoint waypoint, int prio) {
-        if (prio >= 10) {
-            prio = 1;
-        }
+        int lowPrio = 3;
+        int mediumPrio = 5;
+        int highPrio = 7;
 
-        if (prio < 3) {
-            waypoint.setR(20f/255f);
-            waypoint.setG(90f/255f);
-            waypoint.setB(38f/255f);
-            waypoint.setA(0.6f);
+        float[] lowPrioRGBA = {20f/255f, 90f/255f, 38f/255f, 0.6f};
+        float[] mediumPrioRGBA = {145f/255f, 23f/255f, 23f/255f, 0.6f};
+        float[] highPrioRGBA = {104f/255f, 210f/255f, 249f/255f, 0.6f};
+        float[] veryHighPrioRGBA = {49f/255f, 41f/255f, 165f/255f, 0.6f};
+
+        if (prio >= 10) prio = 1;
+
+        if (prio < lowPrio) {
+            waypoint.setRgba(lowPrioRGBA);
         }
-        else if (prio < 5) {
-            waypoint.setR(145f/255f);
-            waypoint.setG(23f/255f);
-            waypoint.setB(23f/255f);
-            waypoint.setA(0.6f);
+        else if (prio < mediumPrio) {
+            waypoint.setRgba(mediumPrioRGBA);
         }
-        else if (prio < 7) {
-            waypoint.setR(104f/255f);
-            waypoint.setG(210f/255f);
-            waypoint.setB(249f/255f);
-            waypoint.setA(0.6f);
+        else if (prio < highPrio) {
+            waypoint.setRgba(highPrioRGBA);
         }
         else {
-            waypoint.setR(49f/255f);
-            waypoint.setG(41f/255f);
-            waypoint.setB(165f/255f);
-            waypoint.setA(0.6f);
+            waypoint.setRgba(veryHighPrioRGBA);
         }
     }
 
@@ -102,16 +100,16 @@ public class EfficientMinerOverlay {
      * @return The priority of the block.
      */
     static int findPrio(int x, int y, int z) {
+        int fetchRadius = 1; // 3x3x3
+
         World world = MinecraftClient.getInstance().world;
-        if (world == null) {
-            return 0;
-        }
+        if (world == null) return 0;
 
         int prio = 0;
 
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                for (int k = -1; k <= 1; k++) {
+        for (int i = -fetchRadius; i <= fetchRadius; i++) {
+            for (int j = -fetchRadius; j <= fetchRadius; j++) {
+                for (int k = -fetchRadius; k <= fetchRadius; k++) {
                     if (blockStates.contains(world.getBlockState(new BlockPos(x+i, y+j, z+k)).getBlock())) {
                         prio++;
                     }
@@ -132,9 +130,7 @@ public class EfficientMinerOverlay {
      */
     static boolean isVisible(int x, int y, int z) {
         World world = MinecraftClient.getInstance().world;
-        if (world == null) {
-            return false;
-        }
+        if (world == null) return false;
 
         if (world.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.BEDROCK) return false;
         if (airTypes.contains(world.getBlockState(new BlockPos(x+1, y, z)).getBlock())) return true; // east

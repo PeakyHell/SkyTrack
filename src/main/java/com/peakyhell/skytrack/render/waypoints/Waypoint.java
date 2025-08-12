@@ -77,56 +77,64 @@ public class Waypoint {
         this.rgba = new float[]{r, g, b, a};
     }
 
+    // Getters
     public String getName() { return this.name; }
 
     public int getX() { return this.coordinates[0]; }
-
     public int getY() { return this.coordinates[1]; }
-
     public int getZ() { return this.coordinates[2]; }
+    public int[] getCoordinates() { return this.coordinates; }
 
     public float getR() { return this.rgba[0]; }
-
     public float getG() { return this.rgba[1]; }
-
     public float getB() { return this.rgba[2]; }
-
     public float getA() { return this.rgba[3]; }
+    public float[] getRgba() { return this.rgba; }
 
+    // Setters
     public void setName(String name) { this.name = name; }
 
     public void setX(int x) { this.coordinates[0] = x; }
-
     public void setY(int y) { this.coordinates[1] = y; }
-
     public void setZ(int z) { this.coordinates[2] = z; }
+    public void setCoordinates(int x, int y, int z) {
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+    }
+    public void setCoordinates(int[] coordinates) { this.setCoordinates(coordinates[0], coordinates[1], coordinates[2]); }
 
     public void setR(float r) { this.rgba[0] = r; }
-
     public void setG(float g) { this.rgba[1] = g; }
-
     public void setB(float b) { this.rgba[2] = b; }
-
     public void setA(float a) { this.rgba[3] = a; }
+    public void setRgba(float r, float g, float b, float a) {
+        this.setR(r);
+        this.setG(g);
+        this.setB(b);
+        this.setA(a);
+    }
+    public void setRgba(float[] rgba) { this.setRgba(rgba[0], rgba[1], rgba[2], rgba[3]); }
 
     public void renderOutlined(WorldRenderContext context) {
-        RenderUtils.renderOutlinedBox(context, this.buildBox(), this.rgba);
+        RenderUtils.renderOutlinedBox(context, this.buildBlockBox(), this.rgba);
     }
 
     public void renderFilled(WorldRenderContext context) {
-        RenderUtils.renderFilledBox(context, this.buildBox(), this.rgba);
+        RenderUtils.renderFilledBox(context, this.buildBlockBox(), this.rgba);
     }
 
-    public Box buildBox() {
+    public Box buildBlockBox() {
+        double blockSize = 1;
+        double offset = 0.01;
+
         int x = this.getX();
         int y = this.getY();
         int z = this.getZ();
 
-        double OFFSET = 0.01;
-
         return new Box(
-                x - OFFSET, y - OFFSET, z - OFFSET,
-                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
+                x - offset, y - offset, z - offset,
+                x + blockSize + offset, y + blockSize + offset, z + blockSize + offset
         );
     }
 }
