@@ -15,12 +15,12 @@ import java.util.Date;
 import java.util.List;
 
 public class PlayerInfo {
-    public String USERNAME;
-    public String UUID;
-    public ArrayList<String> PROFILES;
-    public String ACTIVE_PROFILE;
-    public String LOCATION;
-    public Date LAST_UPDATED;
+    private String USERNAME;
+    private String UUID;
+    private ArrayList<String> PROFILES;
+    private String ACTIVE_PROFILE;
+    private String LOCATION;
+    private Date LAST_UPDATED;
 
     public PlayerInfo() {
         this.USERNAME = MinecraftClient.getInstance().getSession().getUsername();
@@ -30,8 +30,34 @@ public class PlayerInfo {
         this.LOCATION = "";
         this.LAST_UPDATED = new Date();
 
-        SkyTrack.SCHEDULER.scheduleRecurring(this::getLocation, 2, 10);
+        SkyTrack.SCHEDULER.scheduleRecurring(this::updateLocation, 2, 10);
     }
+
+    // Getters
+    public String getUSERNAME() { return this.USERNAME; }
+
+    public String getUUID() { return this.UUID; }
+
+    public ArrayList<String> getPROFILES() { return this.PROFILES; }
+
+    public String getACTIVE_PROFILE() { return this.ACTIVE_PROFILE; }
+
+    public String getLOCATION() { return this.LOCATION; }
+
+    public Date getLAST_UPDATED() { return this.LAST_UPDATED; }
+
+    // Setters
+    public void setUSERNAME(String USERNAME) { this.USERNAME = USERNAME; }
+
+    public void setUUID(String UUID) { this.UUID = UUID; }
+
+    public void setPROFILES(ArrayList<String> PROFILES) { this.PROFILES = PROFILES; }
+
+    public void setACTIVE_PROFILE(String ACTIVE_PROFILE) { this.ACTIVE_PROFILE = ACTIVE_PROFILE; }
+
+    public void setLOCATION(String LOCATION) { this.LOCATION = LOCATION; }
+
+    public void setLAST_UPDATED(Date LAST_UPDATED) { this.LAST_UPDATED = LAST_UPDATED; }
 
     /**
      * Requests the profiles list of the player and creates an ArrayList with their UUIDs
@@ -52,20 +78,20 @@ public class PlayerInfo {
 
             profiles_uuids.add(profile_uuid);
             if (profile_data.get("selected").getAsBoolean()) {
-                this.ACTIVE_PROFILE = profile_uuid;
+                this.setACTIVE_PROFILE(profile_uuid);
             }
         }
 
         return profiles_uuids;
     }
 
-    public void getLocation() {
+    public void updateLocation() {
         List<String> scoreboardLines = ScoreboardUtils.getLines();
         if (scoreboardLines == null) return;
 
         for (String line : scoreboardLines) {
             if (line.contains("⏣")) {
-                this.LOCATION = line;
+                this.setLOCATION(line);
                 return;
             }
         }

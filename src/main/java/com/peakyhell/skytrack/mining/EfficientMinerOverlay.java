@@ -22,7 +22,7 @@ public class EfficientMinerOverlay {
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
 
     public static void init() {
-        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.LOCATION != null && (SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.LOCATION.contains("Glacite Mineshaft"));
+        BooleanSupplier condition = () -> SkyTrack.PLAYER_INFO.getLOCATION() != null && (SkyTrack.PLAYER_INFO.getLOCATION().contains("Glacite Tunnels") || SkyTrack.PLAYER_INFO.getLOCATION().contains("Glacite Mineshaft"));
         SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, 2, 10, condition, true);
         SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, 2, 10, condition, true);
     }
