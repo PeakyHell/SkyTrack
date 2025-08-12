@@ -12,7 +12,7 @@ public class Hello {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
                 dispatcher.register(ClientCommandManager.literal("hello").executes(context -> {
-                    context.getSource().sendFeedback(Text.literal("[SkyTrack] Hello, " + SkyTrack.PLAYER_INFO.USERNAME + "(" + SkyTrack.PLAYER_INFO.UUID + ") !"));
+                    context.getSource().sendFeedback(Text.literal("[SkyTrack] Hello, " + SkyTrack.PLAYER_INFO.getUSERNAME() + "(" + SkyTrack.PLAYER_INFO.getUUID() + ") !"));
                     return 1;
                 }))
         );
