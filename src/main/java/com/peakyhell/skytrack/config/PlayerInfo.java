@@ -1,18 +1,15 @@
 package com.peakyhell.skytrack.config;
 
-import com.google.gson.JsonObject;
-import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.utils.HypixelAPI;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
-import com.peakyhell.skytrack.utils.ScoreboardUtils;
 import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PlayerInfo {
     private String USERNAME;
@@ -29,8 +26,6 @@ public class PlayerInfo {
         this.ACTIVE_PROFILE = "";
         this.LOCATION = "";
         this.LAST_UPDATED = new Date();
-
-        SkyTrack.SCHEDULER.scheduleRecurring(this::updateLocation, 2, 10);
     }
 
     // Getters
@@ -83,17 +78,5 @@ public class PlayerInfo {
         }
 
         return profiles_uuids;
-    }
-
-    public void updateLocation() {
-        List<String> scoreboardLines = ScoreboardUtils.getLines();
-        if (scoreboardLines == null) return;
-
-        for (String line : scoreboardLines) {
-            if (line.contains("⏣")) {
-                this.setLOCATION(line);
-                return;
-            }
-        }
     }
 }
