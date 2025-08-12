@@ -9,9 +9,12 @@ import com.peakyhell.skytrack.utils.scheduler.Scheduler;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.hypixel.modapi.HypixelModAPI;
+
 import org.slf4j.Logger;
 
+
 public class SkyTrack implements ClientModInitializer {
+
     public static final String MOD_ID = "skytrack";
     public static Logger LOGGER;
     public static Scheduler SCHEDULER;

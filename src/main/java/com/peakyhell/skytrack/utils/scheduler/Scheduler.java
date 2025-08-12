@@ -5,27 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+
 public class Scheduler {
+
     private int currentTick;
     private final HashMap<Integer, List<Runnable>> tasks;
     private final List<RecurringTask> recurringTasks;
 
+
+// === Constructors ===
     public Scheduler() {
         this.currentTick = 0;
         this.tasks = new HashMap<>();
         this.recurringTasks = new ArrayList<>();
     }
 
-    // Getters
+
+// === Getters ===
     public int getCurrentTick() { return this.currentTick; }
-
     public HashMap<Integer, List<Runnable>> getTasks() { return tasks; }
-
     public List<RecurringTask> getRecurringTasks() { return recurringTasks; }
 
-    // Setters
+
+// === Setters ===
     private void incrementCurrentTick() { this.currentTick++; }
 
+
+// === Methods ===
     /**
      * Schedule a task that must be run in <code>delay</code> ticks.
      * @param task The task to schedule

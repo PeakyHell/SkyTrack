@@ -17,9 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+
 public class EfficientMinerOverlay {
+
     static List<Block> airTypes = Arrays.asList(Blocks.AIR, Blocks.SNOW, Blocks.LIGHT_GRAY_CARPET);
     static List<Block> blockStates = Arrays.asList(Blocks.CLAY, Blocks.SMOOTH_RED_SANDSTONE);
+
 
     public static void init() {
         int delay = 2; // Start running in 2 ticks
@@ -30,6 +33,7 @@ public class EfficientMinerOverlay {
         SkyTrack.SCHEDULER.scheduleRecurringCondition(SkyTrack.WAYPOINT_MANAGER::clear, delay, interval, condition, keep);
         SkyTrack.SCHEDULER.scheduleRecurringCondition(EfficientMinerOverlay::getBLocksAroundPlayer, delay, interval, condition, keep);
     }
+
 
     /**
      * Fetch all the blocks in a 13x13x13 box around the player, create waypoints and calculate their priority

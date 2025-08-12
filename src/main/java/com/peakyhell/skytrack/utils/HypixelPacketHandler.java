@@ -11,6 +11,7 @@ import net.hypixel.modapi.packet.impl.serverbound.ServerboundPartyInfoPacket;
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPingPacket;
 import net.hypixel.modapi.packet.impl.serverbound.ServerboundPlayerInfoPacket;
 
+
 public class HypixelPacketHandler {
 
     public static void init() {
@@ -27,6 +28,8 @@ public class HypixelPacketHandler {
         instance.createHandler(ClientboundLocationPacket.class, HypixelPacketHandler::handleLocation);
     }
 
+
+// === Handlers ===
     private static void handleHello(ClientboundHelloPacket packet) {
         SkyTrack.LOGGER.info(packet.toString());
     }
@@ -48,6 +51,8 @@ public class HypixelPacketHandler {
         SkyTrack.LOGGER.info(packet.toString());
     }
 
+
+// === Senders ===
     public static void sendPing() {
         SkyTrack.HYPIXELMODAPI.sendPacket(new ServerboundPingPacket());
     }

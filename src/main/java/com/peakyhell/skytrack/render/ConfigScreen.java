@@ -6,6 +6,7 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
+
 public class ConfigScreen extends Screen {
 
     public ConfigScreen(Text title) {

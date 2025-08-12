@@ -11,7 +11,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+
 public class HypixelAPI {
+
     private static final String HYPIXEL_API_URL = "https://api.hypixel.net/v2";
     private static final String HYPIXEL_API_KEY = "";
     private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()

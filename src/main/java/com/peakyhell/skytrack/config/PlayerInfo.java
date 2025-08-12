@@ -11,7 +11,9 @@ import net.minecraft.client.MinecraftClient;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 public class PlayerInfo {
+
     private String USERNAME;
     private String UUID;
     private ArrayList<String> PROFILES;
@@ -19,6 +21,8 @@ public class PlayerInfo {
     private String LOCATION;
     private Date LAST_UPDATED;
 
+
+// === Constructors ===
     public PlayerInfo() {
         this.USERNAME = MinecraftClient.getInstance().getSession().getUsername();
         this.UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
@@ -28,32 +32,26 @@ public class PlayerInfo {
         this.LAST_UPDATED = new Date();
     }
 
-    // Getters
+
+// === Getters ===
     public String getUSERNAME() { return this.USERNAME; }
-
     public String getUUID() { return this.UUID; }
-
     public ArrayList<String> getPROFILES() { return this.PROFILES; }
-
     public String getACTIVE_PROFILE() { return this.ACTIVE_PROFILE; }
-
     public String getLOCATION() { return this.LOCATION; }
-
     public Date getLAST_UPDATED() { return this.LAST_UPDATED; }
 
-    // Setters
+
+// === Setters ===
     public void setUSERNAME(String USERNAME) { this.USERNAME = USERNAME; }
-
     public void setUUID(String UUID) { this.UUID = UUID; }
-
     public void setPROFILES(ArrayList<String> PROFILES) { this.PROFILES = PROFILES; }
-
     public void setACTIVE_PROFILE(String ACTIVE_PROFILE) { this.ACTIVE_PROFILE = ACTIVE_PROFILE; }
-
     public void setLOCATION(String LOCATION) { this.LOCATION = LOCATION; }
-
     public void setLAST_UPDATED(Date LAST_UPDATED) { this.LAST_UPDATED = LAST_UPDATED; }
 
+
+// === Methods ===
     /**
      * Requests the profiles list of the player and creates an ArrayList with their UUIDs
      * @return An ArrayList of the UUIDs.

@@ -1,16 +1,24 @@
 package com.peakyhell.skytrack.render.waypoints;
 
-import com.google.gson.JsonObject;
 import com.peakyhell.skytrack.render.RenderUtils;
+
+import com.google.gson.JsonObject;
+
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+
 import net.minecraft.util.math.Box;
+
 
 public class Waypoint {
 
+    private static final String defaultName = "Waypoint";
+    private static final float[] defaultColor = {245f/255f, 40f/255f, 145f/255f, 0.8f};
     private String name;
     private final int[] coordinates;
     private final float[] rgba;
 
+
+// === Constructors ===
     /**
      * Build a waypoint from a JSON object, used to import from a JSON file using Soopy waypoints format.
      * @param json A JSON object containing the waypoint data
@@ -28,7 +36,7 @@ public class Waypoint {
      * @param z The x coordinate
      */
     public Waypoint(int x, int y, int z) {
-        this("Waypoint", x, y, z, 245f/255f, 40f/255f, 145f/255f, 0.8f);
+        this(defaultName, x, y, z, defaultColor[0], defaultColor[1], defaultColor[2], defaultColor[3]);
     }
 
     /**
@@ -39,7 +47,7 @@ public class Waypoint {
      * @param z The x coordinate
      */
     public Waypoint(String name, int x, int y, int z) {
-        this(name, x, y, z, 245f/255f, 40f/255f, 145f/255f, 0.8f); // Default color to pink
+        this(name, x, y, z, defaultColor[0], defaultColor[1], defaultColor[2], defaultColor[3]); // Default color to pink
     }
 
     /**
@@ -54,7 +62,7 @@ public class Waypoint {
      */
     public Waypoint(int x, int y, int z,
                     float r, float g, float b, float a) {
-        this("Waypoint", x, y, z, r, g, b, a);
+        this(defaultName, x, y, z, r, g, b, a);
     }
 
     /**
@@ -77,7 +85,8 @@ public class Waypoint {
         this.rgba = new float[]{r, g, b, a};
     }
 
-    // Getters
+
+// === Getters ===
     public String getName() { return this.name; }
 
     public int getX() { return this.coordinates[0]; }
@@ -91,7 +100,8 @@ public class Waypoint {
     public float getA() { return this.rgba[3]; }
     public float[] getRgba() { return this.rgba; }
 
-    // Setters
+
+// === Setters ===
     public void setName(String name) { this.name = name; }
 
     public void setX(int x) { this.coordinates[0] = x; }
@@ -116,6 +126,8 @@ public class Waypoint {
     }
     public void setRgba(float[] rgba) { this.setRgba(rgba[0], rgba[1], rgba[2], rgba[3]); }
 
+
+// === Methods ===
     public void renderOutlined(WorldRenderContext context) {
         RenderUtils.renderOutlinedBox(context, this.buildBlockBox(), this.rgba);
     }

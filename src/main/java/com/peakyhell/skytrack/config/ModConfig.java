@@ -13,7 +13,9 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
 import net.hypixel.modapi.HypixelModAPI;
+
 import org.slf4j.LoggerFactory;
+
 
 public class ModConfig {
 
