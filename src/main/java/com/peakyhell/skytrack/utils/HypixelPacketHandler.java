@@ -47,7 +47,9 @@ public class HypixelPacketHandler {
     }
 
     private static void handleLocation(ClientboundLocationPacket packet) {
-        SkyTrack.PLAYER_INFO.setLOCATION(packet.getMode().toString());
+        if (packet.getMode().isPresent()) {
+            SkyTrack.PLAYER_INFO.setLOCATION(packet.getMode().get());
+        }
         SkyTrack.LOGGER.info(packet.toString());
     }
 
