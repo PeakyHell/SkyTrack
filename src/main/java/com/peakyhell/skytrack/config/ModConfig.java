@@ -6,22 +6,30 @@ import com.peakyhell.skytrack.commands.Hello;
 import com.peakyhell.skytrack.mining.EfficientMinerOverlay;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
+import com.peakyhell.skytrack.utils.HypixelPacketHandler;
 import com.peakyhell.skytrack.utils.scheduler.Scheduler;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
+import net.hypixel.modapi.HypixelModAPI;
+
 import org.slf4j.LoggerFactory;
+
 
 public class ModConfig {
 
     public static void init() {
 
         SkyTrack.LOGGER = LoggerFactory.getLogger(SkyTrack.MOD_ID);
+        SkyTrack.HYPIXELMODAPI = HypixelModAPI.getInstance();
         SkyTrack.SCHEDULER = new Scheduler();
         SkyTrack.PLAYER_INFO = new PlayerInfo();
         SkyTrack.SKYBLOCK_DATA = new SkyblockData();
         SkyTrack.WAYPOINT_MANAGER = new WaypointManager();
+
+        // Initialize HypixelModAPI
+        HypixelPacketHandler.init();
 
         // Initialize Commands
         Hello.init();

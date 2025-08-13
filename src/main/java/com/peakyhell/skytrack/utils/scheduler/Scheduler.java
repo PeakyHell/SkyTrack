@@ -5,17 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+
 public class Scheduler {
+
     private int currentTick;
     private final HashMap<Integer, List<Runnable>> tasks;
     private final List<RecurringTask> recurringTasks;
 
+
+// === Constructors ===
     public Scheduler() {
         this.currentTick = 0;
         this.tasks = new HashMap<>();
         this.recurringTasks = new ArrayList<>();
     }
 
+
+// === Getters ===
+    public int getCurrentTick() { return this.currentTick; }
+    public HashMap<Integer, List<Runnable>> getTasks() { return tasks; }
+    public List<RecurringTask> getRecurringTasks() { return recurringTasks; }
+
+
+// === Setters ===
+    private void incrementCurrentTick() { this.currentTick++; }
+
+
+// === Methods ===
     /**
      * Schedule a task that must be run in <code>delay</code> ticks.
      * @param task The task to schedule
@@ -32,7 +48,7 @@ public class Scheduler {
 
         // If tasks are already scheduled for tick, add to list.
         // Else initialize new list for tick
-        this.tasks.computeIfAbsent(this.currentTick + delay, k -> new ArrayList<>()).add(task);
+        this.getTasks().computeIfAbsent(this.getCurrentTick() + delay, k -> new ArrayList<>()).add(task);
     }
 
     /**
@@ -54,7 +70,7 @@ public class Scheduler {
      * @param keep If <code>condition</code> become false, if true, the task will not be deleted and will be restarted when condition become true again
      */
     public void scheduleRecurringCondition(Runnable task, int delay, int interval, BooleanSupplier condition, boolean keep) {
-        this.recurringTasks.add(new RecurringTask(task, delay, interval, condition, keep));
+        this.getRecurringTasks().add(new RecurringTask(task, delay, interval, condition, keep));
     }
 
     /**
@@ -62,8 +78,8 @@ public class Scheduler {
      */
     public void tick() {
         // Run unique tasks
-        if (this.tasks.containsKey(this.currentTick)) {
-            List<Runnable> toExecute =  this.tasks.remove(this.currentTick);
+        if (this.getTasks().containsKey(this.getCurrentTick())) {
+            List<Runnable> toExecute =  this.getTasks().remove(this.getCurrentTick());
 
             for (Runnable taskToRun : toExecute) {
                 if (taskToRun != null) taskToRun.run();
@@ -71,31 +87,27 @@ public class Scheduler {
         }
 
         // Run recurring tasks
-        if (!this.recurringTasks.isEmpty()) {
-            this.recurringTasks.removeIf(rt -> !rt.condition.getAsBoolean() && !rt.keep); // Remove tasks with conditions that became false and that must not be kept
+        if (!this.getRecurringTasks().isEmpty()) {
+            this.getRecurringTasks().removeIf(rt -> !rt.getCondition().getAsBoolean() && !rt.isKeep()); // Remove tasks with conditions that became false and that must not be kept
 
-            List<RecurringTask> rTasks = new ArrayList<>(recurringTasks);
+            List<RecurringTask> rTasks = new ArrayList<>(this.getRecurringTasks());
 
             for (RecurringTask rt : rTasks) {
-                if (rt.condition.getAsBoolean() && this.currentTick >= rt.startTick && (this.currentTick - rt.startTick) % rt.interval == 0) {
-                    rt.task.run();
+                if (rt.getCondition().getAsBoolean() && this.getCurrentTick() >= rt.getStartTick() && (this.getCurrentTick() - rt.getStartTick()) % rt.getInterval() == 0) {
+                    rt.getTask().run();
                 }
             }
         }
 
 
-        this.currentTick++;
+        this.incrementCurrentTick();
     }
 
     public void clear() {
-        this.tasks.clear();
+        this.getTasks().clear();
     }
 
     public void clearRecurring() {
-        this.recurringTasks.clear();
-    }
-
-    public int getCurrentTick() {
-        return this.currentTick;
+        this.getRecurringTasks().clear();
     }
 }

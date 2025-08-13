@@ -1,17 +1,24 @@
 package com.peakyhell.skytrack.render.waypoints;
 
-import com.google.gson.JsonObject;
 import com.peakyhell.skytrack.render.RenderUtils;
+
+import com.google.gson.JsonObject;
+
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+
 import net.minecraft.util.math.Box;
+
 
 public class Waypoint {
 
-    String name;
-    int[] coordinates;
-    float[] rgba;
-    double OFFSET = 0.01;
+    private static final String defaultName = "Waypoint";
+    private static final float[] defaultColor = {245f/255f, 40f/255f, 145f/255f, 0.8f};
+    private String name;
+    private final int[] coordinates;
+    private final float[] rgba;
 
+
+// === Constructors ===
     /**
      * Build a waypoint from a JSON object, used to import from a JSON file using Soopy waypoints format.
      * @param json A JSON object containing the waypoint data
@@ -29,7 +36,7 @@ public class Waypoint {
      * @param z The x coordinate
      */
     public Waypoint(int x, int y, int z) {
-        this("Waypoint", x, y, z, 245f/255f, 40f/255f, 145f/255f, 0.8f);
+        this(defaultName, x, y, z, defaultColor[0], defaultColor[1], defaultColor[2], defaultColor[3]);
     }
 
     /**
@@ -40,7 +47,7 @@ public class Waypoint {
      * @param z The x coordinate
      */
     public Waypoint(String name, int x, int y, int z) {
-        this(name, x, y, z, 245f/255f, 40f/255f, 145f/255f, 0.8f); // Default color to pink
+        this(name, x, y, z, defaultColor[0], defaultColor[1], defaultColor[2], defaultColor[3]); // Default color to pink
     }
 
     /**
@@ -55,7 +62,7 @@ public class Waypoint {
      */
     public Waypoint(int x, int y, int z,
                     float r, float g, float b, float a) {
-        this("Waypoint", x, y, z, r, g, b, a);
+        this(defaultName, x, y, z, r, g, b, a);
     }
 
     /**
@@ -78,57 +85,68 @@ public class Waypoint {
         this.rgba = new float[]{r, g, b, a};
     }
 
+
+// === Getters ===
     public String getName() { return this.name; }
 
     public int getX() { return this.coordinates[0]; }
-
     public int getY() { return this.coordinates[1]; }
-
     public int getZ() { return this.coordinates[2]; }
+    public int[] getCoordinates() { return this.coordinates; }
 
     public float getR() { return this.rgba[0]; }
-
     public float getG() { return this.rgba[1]; }
-
     public float getB() { return this.rgba[2]; }
-
     public float getA() { return this.rgba[3]; }
+    public float[] getRgba() { return this.rgba; }
 
+
+// === Setters ===
     public void setName(String name) { this.name = name; }
 
     public void setX(int x) { this.coordinates[0] = x; }
-
     public void setY(int y) { this.coordinates[1] = y; }
-
     public void setZ(int z) { this.coordinates[2] = z; }
+    public void setCoordinates(int x, int y, int z) {
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+    }
+    public void setCoordinates(int[] coordinates) { this.setCoordinates(coordinates[0], coordinates[1], coordinates[2]); }
 
     public void setR(float r) { this.rgba[0] = r; }
-
     public void setG(float g) { this.rgba[1] = g; }
-
     public void setB(float b) { this.rgba[2] = b; }
-
     public void setA(float a) { this.rgba[3] = a; }
+    public void setRgba(float r, float g, float b, float a) {
+        this.setR(r);
+        this.setG(g);
+        this.setB(b);
+        this.setA(a);
+    }
+    public void setRgba(float[] rgba) { this.setRgba(rgba[0], rgba[1], rgba[2], rgba[3]); }
 
+
+// === Methods ===
     public void renderOutlined(WorldRenderContext context) {
-        int x = this.coordinates[0];
-        int y = this.coordinates[1];
-        int z = this.coordinates[2];
-        Box box = new Box(
-                x - OFFSET, y - OFFSET, z - OFFSET,
-                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
-        );
-        RenderUtils.renderOutlinedBox(context, box, this.rgba);
+        RenderUtils.renderOutlinedBox(context, this.buildBlockBox(), this.rgba);
     }
 
     public void renderFilled(WorldRenderContext context) {
-        int x = this.coordinates[0];
-        int y = this.coordinates[1];
-        int z = this.coordinates[2];
-        Box box = new Box(
-                x - OFFSET, y - OFFSET, z - OFFSET,
-                x + 1 + OFFSET, y + 1 + OFFSET, z + 1 + OFFSET
+        RenderUtils.renderFilledBox(context, this.buildBlockBox(), this.rgba);
+    }
+
+    public Box buildBlockBox() {
+        double blockSize = 1;
+        double offset = 0.01;
+
+        int x = this.getX();
+        int y = this.getY();
+        int z = this.getZ();
+
+        return new Box(
+                x - offset, y - offset, z - offset,
+                x + blockSize + offset, y + blockSize + offset, z + blockSize + offset
         );
-        RenderUtils.renderFilledBox(context, box, this.rgba);
     }
 }
