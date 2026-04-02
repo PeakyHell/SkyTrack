@@ -43,7 +43,6 @@ public class ModConfig {
         ClientTickEvents.END_CLIENT_TICK.register(client -> SkyTrack.SCHEDULER.tick());
 
         // Render waypoints
-        Renderer.init();
         WorldRenderEvents.BEFORE_TRANSLUCENT.register(context -> {
             for (Waypoint wp : SkyTrack.WAYPOINT_MANAGER.getWaypoints()) {
                 wp.render(context);

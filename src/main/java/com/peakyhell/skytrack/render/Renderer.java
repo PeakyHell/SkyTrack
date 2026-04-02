@@ -47,11 +47,10 @@ public class Renderer {
     private static final Matrix4f TEXTURE_MATRIX = new Matrix4f();
     private MappableRingBuffer vertexBuffer;
 
-    public static void init() {
-        instance = new Renderer();
-    }
-
     public static Renderer getInstance() {
+        if (instance == null) {
+            instance = new Renderer();
+        }
         return instance;
     }
 
