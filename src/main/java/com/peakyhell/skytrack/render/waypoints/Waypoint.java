@@ -1,12 +1,12 @@
 package com.peakyhell.skytrack.render.waypoints;
 
-import com.peakyhell.skytrack.render.RenderUtils;
+import com.peakyhell.skytrack.render.Renderer;
 
 import com.google.gson.JsonObject;
 
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 
-import net.minecraft.util.math.Box;
+import net.minecraft.world.phys.AABB;
 
 
 public class Waypoint {
@@ -128,15 +128,12 @@ public class Waypoint {
 
 
 // === Methods ===
-    public void renderOutlined(WorldRenderContext context) {
-        RenderUtils.renderOutlinedBox(context, this.buildBlockBox(), this.rgba);
+    public void render(WorldRenderContext context) {
+        Renderer renderer = Renderer.getInstance();
+        renderer.renderAndDrawWaypoint(context, this.buildBlockBox(), this.rgba);
     }
 
-    public void renderFilled(WorldRenderContext context) {
-        RenderUtils.renderFilledBox(context, this.buildBlockBox(), this.rgba);
-    }
-
-    public Box buildBlockBox() {
+    public AABB buildBlockBox() {
         double blockSize = 1;
         double offset = 0.01;
 
@@ -144,7 +141,7 @@ public class Waypoint {
         int y = this.getY();
         int z = this.getZ();
 
-        return new Box(
+        return new AABB(
                 x - offset, y - offset, z - offset,
                 x + blockSize + offset, y + blockSize + offset, z + blockSize + offset
         );

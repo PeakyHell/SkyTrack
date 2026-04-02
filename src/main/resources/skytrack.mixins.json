@@ -3,7 +3,8 @@
 	"package": "com.peakyhell.skytrack.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"RendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

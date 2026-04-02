@@ -5,9 +5,9 @@ import com.peakyhell.skytrack.SkyTrack;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 
 public class ConfigScreen {
@@ -18,9 +18,9 @@ public class ConfigScreen {
             dispatcher.register(ClientCommandManager.literal("skytrack")
                     .executes(context -> {
                         Screen screen = new com.peakyhell.skytrack.render.ConfigScreen(
-                                Text.literal("SkyTrack Config Screen")
+                                Component.literal("SkyTrack Config Screen")
                         );
-                        SkyTrack.SCHEDULER.schedule(() -> MinecraftClient.getInstance().setScreen(screen), 1);
+                        SkyTrack.SCHEDULER.schedule(() -> Minecraft.getInstance().setScreen(screen), 1);
 
                         return 1;
                     })
