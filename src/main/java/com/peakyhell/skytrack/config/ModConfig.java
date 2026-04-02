@@ -10,7 +10,7 @@ import com.peakyhell.skytrack.utils.HypixelPacketHandler;
 import com.peakyhell.skytrack.utils.scheduler.Scheduler;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 
 import net.hypixel.modapi.HypixelModAPI;
 
@@ -42,7 +42,7 @@ public class ModConfig {
         ClientTickEvents.END_CLIENT_TICK.register(client -> SkyTrack.SCHEDULER.tick());
 
         // Render waypoints
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+        WorldRenderEvents.BEFORE_TRANSLUCENT.register(context -> {
             for (Waypoint wp : SkyTrack.WAYPOINT_MANAGER.getWaypoints()) {
                 wp.renderFilled(context);
             }
