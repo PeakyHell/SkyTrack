@@ -1,3 +1,4 @@
+/*
 package com.peakyhell.skytrack.utils;
 
 import net.minecraft.client.MinecraftClient;
@@ -37,3 +38,4 @@ public class ScoreboardUtils {
         return visibleLines.reversed();
     }
 }
+*/

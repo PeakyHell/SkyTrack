@@ -4,6 +4,7 @@ import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.commands.ConfigScreen;
 import com.peakyhell.skytrack.commands.Hello;
 import com.peakyhell.skytrack.mining.EfficientMinerOverlay;
+import com.peakyhell.skytrack.render.Renderer;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 import com.peakyhell.skytrack.render.waypoints.WaypointManager;
 import com.peakyhell.skytrack.utils.HypixelPacketHandler;
@@ -42,9 +43,10 @@ public class ModConfig {
         ClientTickEvents.END_CLIENT_TICK.register(client -> SkyTrack.SCHEDULER.tick());
 
         // Render waypoints
+        Renderer.init();
         WorldRenderEvents.BEFORE_TRANSLUCENT.register(context -> {
             for (Waypoint wp : SkyTrack.WAYPOINT_MANAGER.getWaypoints()) {
-                wp.renderFilled(context);
+                wp.render(context);
             }
         });
     }
