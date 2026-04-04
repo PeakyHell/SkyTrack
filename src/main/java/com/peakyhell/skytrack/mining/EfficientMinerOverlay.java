@@ -6,12 +6,12 @@ package com.peakyhell.skytrack.mining;
 import com.peakyhell.skytrack.SkyTrack;
 import com.peakyhell.skytrack.render.waypoints.Waypoint;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,8 +41,8 @@ public class EfficientMinerOverlay {
     public static void getBLocksAroundPlayer() {
         int fetchRadius = 6; // 13x13x13
 
-        World world = MinecraftClient.getInstance().world;
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        Level world = Minecraft.getInstance().level;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (world == null || player == null) return;
 
         int playerX = (int) Math.floor(player.getX());
@@ -106,7 +106,7 @@ public class EfficientMinerOverlay {
     static int findPrio(int x, int y, int z) {
         int fetchRadius = 1; // 3x3x3
 
-        World world = MinecraftClient.getInstance().world;
+        Level world = Minecraft.getInstance().level;
         if (world == null) return 0;
 
         int prio = 0;
@@ -133,7 +133,7 @@ public class EfficientMinerOverlay {
      *         - false if it's not
      */
     static boolean isVisible(int x, int y, int z) {
-        World world = MinecraftClient.getInstance().world;
+        Level world = Minecraft.getInstance().level;
         if (world == null) return false;
 
         if (world.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.BEDROCK) return false;

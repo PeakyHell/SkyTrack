@@ -6,7 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,8 +24,8 @@ public class PlayerInfo {
 
 // === Constructors ===
     public PlayerInfo() {
-        this.USERNAME = MinecraftClient.getInstance().getSession().getUsername();
-        this.UUID = MinecraftClient.getInstance().getSession().getUuidOrNull().toString();
+        this.USERNAME = Minecraft.getInstance().getUser().getName();
+        this.UUID = Minecraft.getInstance().getUser().getProfileId().toString();
         this.PROFILES = getPlayerProfiles(this.UUID);
         this.ACTIVE_PROFILE = "";
         this.LOCATION = "";
