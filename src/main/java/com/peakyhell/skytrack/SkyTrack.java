@@ -11,7 +11,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 
 import net.hypixel.modapi.HypixelModAPI;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 import org.slf4j.Logger;
 
@@ -31,7 +31,7 @@ public class SkyTrack implements ClientModInitializer {
 
         ModConfig.init();
 
-        Identifier id = Identifier.of(MOD_ID, "widget_box");
+        Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, "widget_box");
         HudElementRegistry.addLast(id, HudUtils.buildWidget("SkyTrack", 15, 15, 250, 100, 0x96000000, 0xffffffff, 2));
 
         LOGGER.info("[SkyTrack] Mod Loaded Successfully");
